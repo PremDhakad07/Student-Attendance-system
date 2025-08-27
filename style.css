@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+    background-color: #1a202c;
+    color: #cbd5e0;
+}
+
+body.dark header {
+    background-color: #2d3748;
+}
+
+body.dark main > div {
+    background-color: #2d3748;
+}
+
+body.dark button:hover {
+    background-color: #4a5568;
+}
+
+body.dark #dropdown-menu {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+body.dark input, body.dark select, body.dark textarea {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+body.dark .file:hover {
+    background-color: #4a5568;
+}
+
+#video-feed {
+    width: 100%;
+    height: auto;
+    background-color: #000;
+}
+
+#video-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Base styles for dark mode */
+.dark-mode-toggle {
+    cursor: pointer;
+}
+
+.dark-mode-toggle svg {
+    transition: transform 0.3s;
+}
+
+.dark-mode-toggle.active svg {
+    transform: rotate(180deg);
+}
+
+/* Optional: Add a simple glow effect to buttons on focus */
+button:focus, input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+/* Utility classes from Tailwind CSS for a quick start */
+.container {
+    max-width: 1280px;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.rounded-md {
+    border-radius: 0.375rem;
+}

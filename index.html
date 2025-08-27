@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #ecf0f1;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --bg-color: #f8f9fa;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1f2a38 0%, #34495e 100%);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            background: rgba(44, 62, 80, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            border: 2px solid var(--secondary-color);
+        }
+        h1 {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .video-container {
+            position: relative;
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 700px;
+            aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #video-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .message-box {
+            background-color: rgba(52, 73, 94, 0.7);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            min-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1rem;
+            text-decoration: none;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            font-weight: 600;
+        }
+        .btn-stop {
+            background-color: var(--accent-color);
+        }
+        .btn-stop:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+            background-color: #c0392b;
+        }
+        .btn-back {
+            background-color: #95a5a6;
+            margin-left: 15px;
+        }
+        .btn-back:hover {
+            background-color: #7f8c8d;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Attendance</h1>
+        <div class="video-container">
+            <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+        </div>
+        <div class="message-box">
+            <span id="status-message">Scanning for students...</span>
+        </div>
+        <div class="btn-group">
+            <button id="stop-camera-btn" class="btn btn-stop">Stop Attendance</button>
+            <a href="{{ url_for('main_menu') }}" class="btn btn-back">Main Menu</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stopBtn = document.getElementById('stop-camera-btn');
+            const statusMessage = document.getElementById('status-message');
+
+            stopBtn.addEventListener('click', function() {
+                // Display a stopping message
+                statusMessage.textContent = "Stopping camera...";
+
+                fetch('/stop_camera', {
+                    method: 'POST',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    console.log(data.message);
+                    statusMessage.textContent = "Camera stopped. Please refresh the page to start again.";
+                    document.getElementById('video-feed').src = ""; // Clear the video feed
+                    stopBtn.disabled = true;
+                })
+                .catch(error => {
+                    console.error('Error stopping camera:', error);
+                    statusMessage.textContent = "Error stopping camera.";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
